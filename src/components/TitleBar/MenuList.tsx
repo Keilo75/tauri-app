@@ -5,9 +5,14 @@ import MenuItem, { IMenuItem } from './MenuItem';
 interface MenuListProps {
   menu: IMenuItem[];
   position: 'bottom' | 'side';
+  handleItemClick: (ids: string[]) => void;
 }
 
-const MenuList: React.FC<MenuListProps> = ({ menu, position }) => {
+const MenuList: React.FC<MenuListProps> = ({
+  menu,
+  position,
+  handleItemClick,
+}) => {
   const [hoveredSubMenu, setHoveredSubMenu] = useState<string>();
 
   return (
@@ -17,6 +22,7 @@ const MenuList: React.FC<MenuListProps> = ({ menu, position }) => {
           {...item}
           hoveredSubMenu={hoveredSubMenu}
           setHoveredSubMenu={setHoveredSubMenu}
+          handleItemClick={handleItemClick}
         />
       ))}
     </ul>

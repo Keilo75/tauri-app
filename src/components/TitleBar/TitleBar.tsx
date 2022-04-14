@@ -1,15 +1,21 @@
-import { Button, Group, Text } from '@mantine/core';
+import { Group } from '@mantine/core';
 import React, { useState } from 'react';
-import MenuBar, { IMenuBar, MenuBarProps } from './MenuBar';
+import MenuBar, { IMenuBar } from './MenuBar';
 import './TitleBar.scss';
 
 interface TitleBarProps {
   items: IMenuBar[];
+  handleItemClick: (ids: string[]) => void;
 }
 
-const TitleBar: React.FC<TitleBarProps> = ({ items }) => {
+const TitleBar: React.FC<TitleBarProps> = ({ items, handleItemClick }) => {
   const [hoveredMenu, setHoveredMenu] = useState<string>();
   const hideHoveredMenu = () => setHoveredMenu(undefined);
+
+  const handleItemClickAndHide = (ids: string[]) => {
+    handleItemClick(ids);
+    setHoveredMenu(undefined);
+  };
 
   return (
     <header data-tauri-drag-region className="title-bar">
@@ -20,6 +26,7 @@ const TitleBar: React.FC<TitleBarProps> = ({ items }) => {
             {...item}
             hoveredMenu={hoveredMenu}
             setHoveredMenu={setHoveredMenu}
+            handleItemClick={handleItemClickAndHide}
           />
         ))}
       </Group>

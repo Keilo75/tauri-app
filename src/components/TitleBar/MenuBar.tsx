@@ -11,6 +11,7 @@ export interface IMenuBar {
 export interface MenuBarProps extends IMenuBar {
   hoveredMenu: string | undefined;
   setHoveredMenu: React.Dispatch<React.SetStateAction<string | undefined>>;
+  handleItemClick: (ids: string[]) => void;
 }
 
 const MenuBar: React.FC<MenuBarProps> = ({
@@ -18,6 +19,7 @@ const MenuBar: React.FC<MenuBarProps> = ({
   menu,
   hoveredMenu,
   setHoveredMenu,
+  handleItemClick,
 }) => {
   const toggleMenu = () =>
     setHoveredMenu((prev) => (prev === undefined ? name : undefined));
@@ -33,7 +35,13 @@ const MenuBar: React.FC<MenuBarProps> = ({
       >
         <Text>{name}</Text>
       </button>
-      {hoveredMenu === name && <MenuList menu={menu} position="bottom" />}
+      {hoveredMenu === name && (
+        <MenuList
+          menu={menu}
+          position="bottom"
+          handleItemClick={handleItemClick}
+        />
+      )}
     </div>
   );
 };

@@ -10,21 +10,26 @@ function App() {
       menu: [
         {
           name: 'Open recent',
+          id: 'open-recent',
           menu: [
             { name: 'Project 1' },
             { name: 'Project 2' },
             { divider: true },
-            { name: 'Clear recently opened' },
+            { name: 'Clear recently opened', id: 'clear-open-recent' },
           ],
         },
         { divider: true },
-        { name: 'Save' },
+        { name: 'Save', id: 'save' },
         { divider: true },
-        { name: 'Exit' },
+        { name: 'Exit', id: 'exit' },
       ],
     },
     { name: 'View', menu: [{ name: 'Reload' }] },
   ];
+
+  const handleItemClick = (ids: string[]) => {
+    console.log(ids);
+  };
 
   return (
     <MantineProvider
@@ -36,7 +41,7 @@ function App() {
       <AppShell
         header={
           <Header height={30}>
-            <TitleBar items={items} />
+            <TitleBar items={items} handleItemClick={handleItemClick} />
           </Header>
         }
       >

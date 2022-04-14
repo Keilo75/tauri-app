@@ -39,6 +39,7 @@
   padding: 4px 0;
   list-style: none;
   z-index: var(--z-index-menu-list);
+  user-select: none;
 
   &.menu-list-bottom {
     top: 30px;
