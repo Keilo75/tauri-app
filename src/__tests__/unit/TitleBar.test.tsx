@@ -9,21 +9,41 @@ const mockItems: IMenuBar[] = [
     menu: [
       {
         name: 'Item 1',
+        id: 'item-1',
         menu: [
-          { name: 'Item 1.1', menu: [{ name: 'Item 1.1.1' }] },
-          { name: 'Item 1.2', menu: [{ name: 'Item 1.2.1' }] },
-          { name: 'Item 1.3' },
+          {
+            name: 'Item 1.1',
+            id: 'item-1-1',
+            menu: [{ name: 'Item 1.1.1', id: 'item-1-1-1' }],
+          },
+          {
+            name: 'Item 1.2',
+            id: 'item-1-2',
+            menu: [{ name: 'Item 1.2.1', id: 'item1-2-1' }],
+          },
+          { name: 'Item 1.3', id: 'item-1-3' },
         ],
       },
       { divider: true },
       {
         name: 'Item 2',
-        menu: [{ name: 'Item 2.1' }, { name: 'Item 2.2' }],
+        id: 'item-2',
+        menu: [
+          { name: 'Item 2.1', id: 'item-2-1' },
+          { name: 'Item 2.2', id: 'item-2-2' },
+        ],
       },
-      { name: 'Item 3', disabled: true },
+      { name: 'Item 3', id: 'item-3' },
+      { name: 'Item 4', id: 'item-4', disabled: true },
     ],
   },
-  { name: 'Bar 2', menu: [{ name: 'Item 1' }, { name: 'Item 2' }] },
+  {
+    name: 'Bar 2',
+    menu: [
+      { name: 'Item 1', id: 'item-1' },
+      { name: 'Item 2', id: 'item-2' },
+    ],
+  },
 ];
 
 const defaultProps: TitleBarProps = {
@@ -41,7 +61,7 @@ describe('Title Bar', () => {
     render(<TitleBar {...defaultProps} />);
 
     expect(screen.queryByTestId('overlay')).not.toBeInTheDocument();
-    await user.click(screen.getByRole('menuitem', { name: /bar 1/i }));
+    await user.click(screen.getByRole('menuitem', { name: 'Bar 1' }));
 
     const overlay = screen.getByTestId('overlay');
     expect(overlay).toBeInTheDocument();
@@ -50,17 +70,66 @@ describe('Title Bar', () => {
     expect(overlay).not.toBeInTheDocument();
   });
 
-  it('only has one open menu at a time', () => {});
+  it('only has one open menu at a time', async () => {
+    const user = userEvent.setup();
+    render(<TitleBar {...defaultProps} />);
 
-  it('calls handleItemClick with the correct ids', () => {});
+    await user.click(screen.getByRole('menuitem', { name: 'Bar 1' }));
+    expect(screen.getByRole('menu')).toBeInTheDocument();
+
+    await user.hover(screen.getByRole('menuitem', { name: 'Bar 2' }));
+    expect(screen.getAllByRole('menu')).toHaveLength(1);
+  });
+
+  it('calls handleItemClick with the correct ids', async () => {
+    const user = userEvent.setup();
+    const mockHandleItemClick = vi.fn();
+    render(
+      <TitleBar {...defaultProps} handleItemClick={mockHandleItemClick} />
+    );
+
+    await user.click(screen.getByRole('menuitem', { name: 'Bar 1' }));
+    await user.click(screen.getByRole('menuitem', { name: 'Item 3' }));
+    expect(mockHandleItemClick).toHaveBeenLastCalledWith(['item-3']);
+
+    await user.click(screen.getByRole('menuitem', { name: 'Bar 1' }));
+    await user.hover(screen.getByRole('menuitem', { name: 'Item 1' }));
+    await user.click(screen.getByRole('menuitem', { name: 'Item 1.3' }));
+    expect(mockHandleItemClick).toHaveBeenLastCalledWith([
+      'item-1',
+      'item-1-3',
+    ]);
+  });
+
+  it('does not call handleItemClick on menu items with a submenu', async () => {
+    const user = userEvent.setup();
+    const mockHandleItemClick = vi.fn();
+    render(
+      <TitleBar {...defaultProps} handleItemClick={mockHandleItemClick} />
+    );
+
+    await user.click(screen.getByRole('menuitem', { name: 'Bar 1' }));
+    await user.click(screen.getByRole('menuitem', { name: 'Item 1' }));
+    expect(mockHandleItemClick).not.toHaveBeenCalled();
+  });
+
+  it('does not call handleItemClick on disabled menu items', async () => {
+    const user = userEvent.setup();
+    const mockHandleItemClick = vi.fn();
+    render(
+      <TitleBar {...defaultProps} handleItemClick={mockHandleItemClick} />
+    );
+
+    await user.click(screen.getByRole('menuitem', { name: 'Bar 1' }));
+    await user.click(screen.getByRole('menuitem', { name: 'Item 4' }));
+    expect(mockHandleItemClick).not.toHaveBeenCalled();
+  });
 
   it('supports multi level menus', () => {});
 
   it('closes submenu on mouse leave', () => {});
 
-  it('does not call handleItemClick on disabled menu items', () => {});
-
-  it('does not call handleItemClick on menu items with a submenu', () => {});
+  it('closes menu on item click', () => {});
 
   it('supports dividers', () => {});
 });

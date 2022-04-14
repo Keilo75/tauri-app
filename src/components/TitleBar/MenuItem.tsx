@@ -33,7 +33,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
   };
 
   const handleClick = (e: React.MouseEvent) => {
-    if (!id || menu) return;
+    if (!id || disabled || menu) return;
     e.stopPropagation();
 
     handleItemClick([id]);
@@ -54,6 +54,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
       )}
       onMouseEnter={handleMouseEnter}
       onClick={handleClick}
+      role="menuitem"
     >
       {divider && <Divider />}
       <Text className={clsx(disabled && 'disabled-text')}>{name}</Text>

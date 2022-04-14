@@ -16,7 +16,7 @@ const MenuList: React.FC<MenuListProps> = ({
   const [hoveredSubMenu, setHoveredSubMenu] = useState<string>();
 
   return (
-    <ul className={clsx('menu-list', `menu-list-${position}`)}>
+    <ul className={clsx('menu-list', `menu-list-${position}`)} role="menu">
       {menu.map((item, index) => (
         <MenuItem
           key={index}

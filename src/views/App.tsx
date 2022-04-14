@@ -5,25 +5,27 @@ import { IMenuBar } from '../components/TitleBar/MenuBar';
 function App() {
   const items: IMenuBar[] = [
     {
-      name: 'File',
+      name: 'Bar 1',
       menu: [
         {
-          name: 'Open recent',
-          id: 'open-recent',
+          name: 'Item 1',
+          id: 'Item 1',
           menu: [
-            { name: 'Project 1' },
-            { name: 'Project 2' },
-            { divider: true },
-            { name: 'Clear recently opened', id: 'clear-open-recent' },
+            { name: 'Item 1.1', menu: [{ name: 'Item 1.1.1' }] },
+            { name: 'Item 1.2', menu: [{ name: 'Item 1.2.1' }] },
+            { name: 'Item 1.3' },
           ],
         },
         { divider: true },
-        { name: 'Save', id: 'save' },
-        { divider: true },
-        { name: 'Exit', id: 'exit' },
+        {
+          name: 'Item 2',
+          menu: [{ name: 'Item 2.1' }, { name: 'Item 2.2' }],
+        },
+        { name: 'Item 3' },
+        { name: 'Item 4', disabled: true },
       ],
     },
-    { name: 'View', menu: [{ name: 'Reload' }] },
+    { name: 'Bar 2', menu: [{ name: 'Item 1' }, { name: 'Item 2' }] },
   ];
 
   const handleItemClick = (ids: string[]) => {
