@@ -70,6 +70,17 @@ describe('Title Bar', () => {
     expect(overlay).not.toBeInTheDocument();
   });
 
+  it('toggles menu on menu bar click', async () => {
+    const user = userEvent.setup();
+    render(<TitleBar {...defaultProps} />);
+
+    await user.click(screen.getByRole('menuitem', { name: 'Bar 1' }));
+    expect(screen.getByRole('menu')).toBeInTheDocument();
+
+    await user.click(screen.getByRole('menuitem', { name: 'Bar 1' }));
+    expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+  });
+
   it('only has one open menu at a time', async () => {
     const user = userEvent.setup();
     render(<TitleBar {...defaultProps} />);
