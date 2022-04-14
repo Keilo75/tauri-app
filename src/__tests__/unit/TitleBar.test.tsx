@@ -81,6 +81,28 @@ describe('Title Bar', () => {
     expect(screen.getAllByRole('menu')).toHaveLength(1);
   });
 
+  it('supports multi level menus', async () => {
+    const user = userEvent.setup();
+    render(<TitleBar {...defaultProps} />);
+
+    await user.click(screen.getByRole('menuitem', { name: 'Bar 1' }));
+    await user.hover(screen.getByRole('menuitem', { name: 'Item 1' }));
+    await user.hover(screen.getByRole('menuitem', { name: 'Item 1.1' }));
+    expect(screen.getAllByRole('menu')).toHaveLength(3);
+  });
+
+  it('closes submenu on mouse leave', async () => {
+    const user = userEvent.setup();
+    render(<TitleBar {...defaultProps} />);
+
+    await user.click(screen.getByRole('menuitem', { name: 'Bar 1' }));
+    await user.hover(screen.getByRole('menuitem', { name: 'Item 1' }));
+    expect(screen.getAllByRole('menu')).toHaveLength(2);
+
+    await user.hover(screen.getByRole('menuitem', { name: 'Item 2' }));
+    expect(screen.getAllByRole('menu')).toHaveLength(2);
+  });
+
   it('calls handleItemClick with the correct ids', async () => {
     const user = userEvent.setup();
     const mockHandleItemClick = vi.fn();
@@ -125,11 +147,20 @@ describe('Title Bar', () => {
     expect(mockHandleItemClick).not.toHaveBeenCalled();
   });
 
-  it('supports multi level menus', () => {});
+  it('closes menu on item click', async () => {
+    const user = userEvent.setup();
+    render(<TitleBar {...defaultProps} />);
 
-  it('closes submenu on mouse leave', () => {});
+    await user.click(screen.getByRole('menuitem', { name: 'Bar 1' }));
+    await user.click(screen.getByRole('menuitem', { name: 'Item 3' }));
+    expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+  });
 
-  it('closes menu on item click', () => {});
+  it('supports dividers', async () => {
+    const user = userEvent.setup();
+    render(<TitleBar {...defaultProps} />);
 
-  it('supports dividers', () => {});
+    await user.click(screen.getByRole('menuitem', { name: 'Bar 1' }));
+    expect(screen.getByRole('separator')).toBeInTheDocument();
+  });
 });

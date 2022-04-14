@@ -56,7 +56,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
       onClick={handleClick}
       role="menuitem"
     >
-      {divider && <Divider />}
+      {divider && <Divider role="separator" />}
       <Text className={clsx(disabled && 'disabled-text')}>{name}</Text>
       {menu && (
         <>
