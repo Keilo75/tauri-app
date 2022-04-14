@@ -32,6 +32,8 @@ const MenuBar: React.FC<MenuBarProps> = ({
         className="title-bar-button"
         onClick={toggleMenu}
         onMouseEnter={openMenu}
+        role="menuitem"
+        aria-expanded={name === hoveredMenu}
       >
         <Text>{name}</Text>
       </button>

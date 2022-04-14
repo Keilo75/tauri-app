@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
-import { AppShell, Header, MantineProvider, Navbar } from '@mantine/core';
+import { AppShell, Header, MantineProvider } from '@mantine/core';
 import TitleBar from '../components/TitleBar/TitleBar';
-import MenuBar, { IMenuBar } from '../components/TitleBar/MenuBar';
+import { IMenuBar } from '../components/TitleBar/MenuBar';
 
 function App() {
   const items: IMenuBar[] = [

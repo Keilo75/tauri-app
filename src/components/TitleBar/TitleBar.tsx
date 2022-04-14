@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import MenuBar, { IMenuBar } from './MenuBar';
 import './TitleBar.scss';
 
-interface TitleBarProps {
+export interface TitleBarProps {
   items: IMenuBar[];
   handleItemClick: (ids: string[]) => void;
 }
@@ -30,7 +30,13 @@ const TitleBar: React.FC<TitleBarProps> = ({ items, handleItemClick }) => {
           />
         ))}
       </Group>
-      {hoveredMenu && <div className="overlay" onClick={hideHoveredMenu} />}
+      {hoveredMenu && (
+        <div
+          className="overlay"
+          onClick={hideHoveredMenu}
+          data-testid="overlay"
+        />
+      )}
     </header>
   );
 };
