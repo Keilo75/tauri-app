@@ -3,6 +3,9 @@ import userEvent from '@testing-library/user-event';
 import { IMenuBar } from '../../components/TitleBar/MenuBar';
 import TitleBar, { TitleBarProps } from '../../components/TitleBar/TitleBar';
 
+import { appWindow } from '@tauri-apps/api/window';
+vi.mock('@tauri-apps/api/window');
+
 const mockItems: IMenuBar[] = [
   {
     name: 'Bar 1',
@@ -55,7 +58,9 @@ describe('Title Bar', () => {
   it('renders', () => {
     render(<TitleBar {...defaultProps} />);
   });
+});
 
+describe('Menu Bars', () => {
   it('shows and hides the overlay', async () => {
     const user = userEvent.setup();
     render(<TitleBar {...defaultProps} />);
@@ -174,4 +179,18 @@ describe('Title Bar', () => {
     await user.click(screen.getByRole('menuitem', { name: 'Bar 1' }));
     expect(screen.getByRole('separator')).toBeInTheDocument();
   });
+});
+
+describe('Window Control Buttons', () => {
+  it.each(['minimize', 'toggleMaximize', 'close'])(
+    'handle %s window control button',
+    async (windowControl) => {
+      const user = userEvent.setup();
+      render(<TitleBar {...defaultProps} />);
+
+      await user.click(screen.getByLabelText(windowControl));
+      // @ts-expect-error
+      expect(appWindow[windowControl]).toHaveBeenCalled();
+    }
+  );
 });

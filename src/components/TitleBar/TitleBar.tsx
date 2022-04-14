@@ -40,15 +40,24 @@ const TitleBar: React.FC<TitleBarProps> = ({ items, handleItemClick }) => {
         ))}
       </Group>
       <Group spacing={0}>
-        <button className="title-bar-button" onClick={handleMinimize}>
+        <button
+          className="title-bar-button"
+          onClick={handleMinimize}
+          aria-label="minimize"
+        >
           <Minimize />
         </button>
-        <button className="title-bar-button" onClick={handleMaximize}>
+        <button
+          className="title-bar-button"
+          onClick={handleMaximize}
+          aria-label="toggleMaximize"
+        >
           <Maximize />
         </button>
         <button
           className="title-bar-button title-bar-button-red"
           onClick={handleClose}
+          aria-label="close"
         >
           <Close />
         </button>
