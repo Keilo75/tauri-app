@@ -1,42 +1,29 @@
-import { AppShell, Header, MantineProvider } from '@mantine/core';
+import { AppShell, Header, MantineProvider, Modal } from '@mantine/core';
 import TitleBar from '../components/TitleBar/TitleBar';
 import { IMenuBar } from '../components/TitleBar/MenuBar';
+import OptionsModal from '../components/OptionsModal/OptionsModal';
+import { useDisclosure } from '@mantine/hooks';
 
 function App() {
+  const [optionsModalOpened, optionsModalHandler] = useDisclosure(true);
+
   const items: IMenuBar[] = [
-    {
-      name: 'Bar 1',
-      menu: [
-        {
-          name: 'Item 1',
-          id: 'Item 1',
-          menu: [
-            { name: 'Item 1.1', menu: [{ name: 'Item 1.1.1' }] },
-            { name: 'Item 1.2', menu: [{ name: 'Item 1.2.1' }] },
-            { name: 'Item 1.3' },
-          ],
-        },
-        { divider: true },
-        {
-          name: 'Item 2',
-          menu: [{ name: 'Item 2.1' }, { name: 'Item 2.2' }],
-        },
-        { name: 'Item 3' },
-        { name: 'Item 4', disabled: true },
-      ],
-    },
-    { name: 'Bar 2', menu: [{ name: 'Item 1' }, { name: 'Item 2' }] },
+    { name: 'File', menu: [{ name: 'Options', id: 'options' }] },
   ];
 
   const handleItemClick = (ids: string[]) => {
-    console.log(ids);
+    const actions: Record<string, (args: string[]) => void> = {
+      options: () => optionsModalHandler.open(),
+    };
+
+    actions[ids[0]](ids.slice(1));
   };
 
   return (
     <MantineProvider
-      withNormalizeCSS
       withGlobalStyles
       withCSSVariables
+      withNormalizeCSS
       theme={{ colorScheme: 'dark' }}
     >
       <AppShell
@@ -48,6 +35,13 @@ function App() {
       >
         <div>hi</div>
       </AppShell>
+      <Modal
+        opened={optionsModalOpened}
+        onClose={optionsModalHandler.close}
+        closeButtonLabel="Close"
+      >
+        <OptionsModal />
+      </Modal>
     </MantineProvider>
   );
 }

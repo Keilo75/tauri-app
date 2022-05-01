@@ -1,4 +1,4 @@
-import { Group } from '@mantine/core';
+import { Group, Text } from '@mantine/core';
 import { appWindow } from '@tauri-apps/api/window';
 import React, { useState } from 'react';
 import MenuBar, { IMenuBar } from './MenuBar';

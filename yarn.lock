@@ -565,6 +565,13 @@
     "@svgr/hast-util-to-babel-ast" "^6.2.1"
     svg-parser "^2.0.2"
 
+"@tauri-apps/api@1.0.0-rc.4":
+  version "1.0.0-rc.4"
+  resolved "https://registry.yarnpkg.com/@tauri-apps/api/-/api-1.0.0-rc.4.tgz#454ef7b15237f3d5752bbfc09c8997a00b1e8a9b"
+  integrity sha512-1HaUsx8+TzFHDoQ+Mmd6RWaMsPyZlurQHgACDt+il5e/ui6pDkumVXaS92SnY5XOcS4gBC0BkgjVfkWgcm/Oww==
+  dependencies:
+    type-fest "2.12.2"
+
 "@tauri-apps/api@^1.0.0-rc.3":
   version "1.0.0-rc.3"
   resolved "https://registry.yarnpkg.com/@tauri-apps/api/-/api-1.0.0-rc.3.tgz#e80ddbe832bf003537d94801d508a7f7e25ac48b"
@@ -2214,6 +2221,13 @@ tabler-icons-react@^1.44.0:
   resolved "https://registry.yarnpkg.com/tabler-icons-react/-/tabler-icons-react-1.44.0.tgz#6536f524e03c765b78078e7f65d3539b946253b6"
   integrity sha512-AYQQGl55yVe1KHZl+zyDAAwDOcPknKZNC7vgwmjyvpmz4P5Gjb7DtpsOPa1nB0qMYW5Orsrt+1e4qnRoCKgo6A==
 
+"tauri-plugin-store-api@github:tauri-apps/tauri-plugin-store":
+  version "0.1.0"
+  resolved "https://codeload.github.com/tauri-apps/tauri-plugin-store/tar.gz/29585d535a1838cdca5c0353bcfe59b418bed5a0"
+  dependencies:
+    "@tauri-apps/api" "1.0.0-rc.4"
+    tslib "2.4.0"
+
 test-exclude@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/test-exclude/-/test-exclude-6.0.0.tgz#04a8698661d805ea6fa293b6cb9e63ac044ef15e"
@@ -2261,6 +2275,11 @@ tr46@^3.0.0:
   dependencies:
     punycode "^2.1.1"
 
+tslib@2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.4.0.tgz#7cecaa7f073ce680a05847aa77be941098f36dc3"
+  integrity sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==
+
 type-check@~0.3.2:
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/type-check/-/type-check-0.3.2.tgz#5884cab512cf1d355e3fb784f30804b2b520db72"
@@ -2277,6 +2296,11 @@ type-fest@2.12.1:
   version "2.12.1"
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-2.12.1.tgz#d2be8f50bf5f8f0a5fd916d29bf3e98c17e960be"
   integrity sha512-AiknQSEqKVGDDjtZqeKrUoTlcj7FKhupmnVUgz6KoOKtvMwRGE6hUNJ/nVear+h7fnUPO1q/htSkYKb1pyntkQ==
+
+type-fest@2.12.2:
+  version "2.12.2"
+  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-2.12.2.tgz#80a53614e6b9b475eb9077472fb7498dc7aa51d0"
+  integrity sha512-qt6ylCGpLjZ7AaODxbpyBZSs9fCI9SkL3Z9q2oxMBQhs/uyY+VD8jHA8ULCGmWQJlBgqvO3EJeAngOHD8zQCrQ==
 
 typescript@^4.5.4:
   version "4.6.3"

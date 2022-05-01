@@ -13,7 +13,7 @@
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "com.tauri.dev",
+      "identifier": "com.botlab.dev",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",
@@ -55,6 +55,9 @@
         "minimize": true,
         "close": true,
         "startDragging": true
+      },
+      "path": {
+        "all": true
       }
     },
     "windows": [
