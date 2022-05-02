@@ -1,6 +1,8 @@
 import { invoke } from '@tauri-apps/api';
 import { defaultAppStore } from './default-app-store';
 
+export const appSettingsCategories = ['general'] as const;
+export type AppSettingsCategories = typeof appSettingsCategories[number];
 export interface AppSettings {
   'general.colorScheme': 'light' | 'dark';
 }

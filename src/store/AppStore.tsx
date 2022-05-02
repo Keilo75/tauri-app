@@ -1,18 +1,31 @@
 import React, { createContext, useEffect, useReducer, useState } from 'react';
-import { AppStore, getAppStore } from '../api/app-store/app-store';
+import { AppSettings, AppStore, getAppStore } from '../api/app-store/app-store';
 import { defaultAppStore } from '../api/app-store/default-app-store';
 
-export type AppStoreAction = {
-  type: 'set';
-  payload: AppStore;
-};
+export type AppStoreAction =
+  | {
+      type: 'set';
+      payload: AppStore;
+    }
+  | { type: 'set-settings'; payload: AppSettings };
+
 const reducer = (state: AppStore, action: AppStoreAction): AppStore => {
-  return state;
+  switch (action.type) {
+    case 'set':
+      return action.payload;
+
+    case 'set-settings':
+      return { ...state, settings: action.payload };
+
+    default:
+      throw new Error('Not implemented');
+  }
 };
 
-const AppStoreContext = createContext<
-  { appStore: AppStore; dispatch: (action: AppStoreAction) => void } | undefined
->(undefined);
+export const AppStoreContext = createContext<{
+  appStore: AppStore;
+  dispatch: (action: AppStoreAction) => void;
+}>({ appStore: defaultAppStore, dispatch: () => null });
 
 const AppStoreProvider: React.FC = ({ children }) => {
   const [appStore, dispatch] = useReducer(reducer, defaultAppStore);

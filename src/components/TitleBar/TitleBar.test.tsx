@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { IMenuBar } from '../../components/TitleBar/MenuBar';
-import TitleBar, { TitleBarProps } from '../../components/TitleBar/TitleBar';
+import { IMenuBar } from './MenuBar';
+import TitleBar, { TitleBarProps } from './TitleBar';
 
 import { appWindow } from '@tauri-apps/api/window';
 vi.mock('@tauri-apps/api/window');

@@ -1,7 +1,7 @@
 import { Divider, Text } from '@mantine/core';
+import { IconChevronRight } from '@tabler/icons';
 import clsx from 'clsx';
-import React, { useState } from 'react';
-import { ChevronRight } from 'tabler-icons-react';
+import React from 'react';
 import MenuList from './MenuList';
 
 export interface IMenuItem {
@@ -60,7 +60,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
       <Text className={clsx(disabled && 'disabled-text')}>{name}</Text>
       {menu && (
         <>
-          <ChevronRight size={18} />
+          <IconChevronRight size={18} />
           {hoveredSubMenu === name && (
             <MenuList
               menu={menu}

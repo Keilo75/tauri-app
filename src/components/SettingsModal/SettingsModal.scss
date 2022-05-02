@@ -1,0 +1,16 @@
+.settings-modal {
+  position: relative;
+
+  .close-button {
+    position: absolute;
+    right: 0;
+  }
+
+  .settings-modal-content {
+    height: 70vh;
+
+    .tab-body {
+      flex-grow: 1;
+    }
+  }
+}
