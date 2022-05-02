@@ -32,7 +32,7 @@ function App() {
       withGlobalStyles
       withCSSVariables
       withNormalizeCSS
-      theme={{ colorScheme: 'dark' }}
+      theme={{ colorScheme: appStore.settings['general.colorScheme'] }}
     >
       <AppShell
         header={
