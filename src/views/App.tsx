@@ -3,15 +3,21 @@ import TitleBar from '../components/TitleBar/TitleBar';
 import { IMenuBar } from '../components/TitleBar/MenuBar';
 import SettingsModal from '../components/SettingsModal/SettingsModal';
 import { useDidUpdate, useDisclosure } from '@mantine/hooks';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { AppStoreContext } from '../store/AppStore';
 import { AppSettings, setAppStore } from '../api/app-store/app-store';
 
 function App() {
   const { appStore, dispatch } = useContext(AppStoreContext);
-  const handleSettingsChange = (newSettings: AppSettings) => {
+  const handleSettingsChange = (newSettings: AppSettings) =>
     dispatch({ type: 'set', payload: { settings: newSettings } });
-  };
+
+  useEffect(() => {
+    document.body.classList.toggle(
+      'dark-theme',
+      appStore.settings['general.colorScheme'] === 'dark'
+    );
+  }, [appStore]);
 
   useDidUpdate(() => {
     setAppStore(appStore);

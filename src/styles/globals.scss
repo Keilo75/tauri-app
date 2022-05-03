@@ -11,6 +11,7 @@ body {
 
 :root {
   --card-background: var(--mantine-color-gray-1);
+  --text-color: var(--mantine-color-gray-8);
 
   @for $i from 1 through 10 {
     --hover-overlay-#{$i}: rgb(0, 0, 0, #{calc($i / 10)});
@@ -27,6 +28,7 @@ body {
 
 body.dark-theme {
   --card-background: var(--mantine-color-dark-6);
+  --text-color: var(--mantine-color-dark-1);
 
   @for $i from 1 through 10 {
     --hover-overlay-#{$i}: rgb(255, 255, 255, #{calc($i / 10)});
