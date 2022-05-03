@@ -2,16 +2,20 @@ import { AppShell, Header, MantineProvider, Modal } from '@mantine/core';
 import TitleBar from '../components/TitleBar/TitleBar';
 import { IMenuBar } from '../components/TitleBar/MenuBar';
 import SettingsModal from '../components/SettingsModal/SettingsModal';
-import { useDisclosure } from '@mantine/hooks';
+import { useDidUpdate, useDisclosure } from '@mantine/hooks';
 import { useContext } from 'react';
 import { AppStoreContext } from '../store/AppStore';
-import { AppSettings } from '../api/app-store/app-store';
+import { AppSettings, setAppStore } from '../api/app-store/app-store';
 
 function App() {
   const { appStore, dispatch } = useContext(AppStoreContext);
   const handleSettingsChange = (newSettings: AppSettings) => {
     dispatch({ type: 'set', payload: { settings: newSettings } });
   };
+
+  useDidUpdate(() => {
+    setAppStore(appStore);
+  }, [appStore]);
 
   const [settingsModalOpened, settingsModalHandler] = useDisclosure(true);
 
@@ -41,7 +45,7 @@ function App() {
           </Header>
         }
       >
-        <div>hi</div>
+        <div></div>
       </AppShell>
       <Modal
         opened={settingsModalOpened}

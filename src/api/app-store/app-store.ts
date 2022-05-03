@@ -13,9 +13,13 @@ export interface AppStore {
 
 export const getAppStore = async (): Promise<AppStore> => {
   try {
-    const appStore = (await invoke('get_app_store')) as AppStore;
-    return appStore;
+    const appStore: string = await invoke('get_app_store');
+    return JSON.parse(appStore) as AppStore;
   } catch (err) {
     return defaultAppStore;
   }
+};
+
+export const setAppStore = async (appStore: AppStore): Promise<void> => {
+  await invoke('set_app_store', { appStore: JSON.stringify(appStore) });
 };
