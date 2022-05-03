@@ -23,7 +23,7 @@ function App() {
     setAppStore(appStore);
   }, [appStore]);
 
-  const [settingsModalOpened, settingsModalHandler] = useDisclosure(true);
+  const [settingsModalOpened, settingsModalHandler] = useDisclosure(false);
 
   const items: IMenuBar[] = [
     { name: 'File', menu: [{ name: 'Settings', id: 'settings' }] },
