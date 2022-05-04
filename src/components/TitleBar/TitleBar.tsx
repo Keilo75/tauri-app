@@ -7,6 +7,7 @@ import './TitleBar.scss';
 import { ReactComponent as Minimize } from '../../assets/images/minimize.svg';
 import { ReactComponent as Maximize } from '../../assets/images/maximize.svg';
 import { ReactComponent as Close } from '../../assets/images/close.svg';
+import { ReactComponent as Icon } from '../../assets/icon/icon.svg';
 
 export interface TitleBarProps {
   items: IMenuBar[];
@@ -29,6 +30,7 @@ const TitleBar: React.FC<TitleBarProps> = ({ items, handleItemClick }) => {
   return (
     <header data-tauri-drag-region className="title-bar">
       <Group className="menu-bars" spacing={0}>
+        <Icon height={20} width={20} className="app-icon" />
         {items.map((item) => (
           <MenuBar
             key={item.name}

@@ -4,6 +4,10 @@
   display: flex;
   justify-content: space-between;
 
+  .app-icon {
+    margin: 0 2.5px;
+  }
+
   .title-bar-button {
     background-color: transparent;
     outline: none;
