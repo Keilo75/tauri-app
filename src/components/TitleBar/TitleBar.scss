@@ -77,7 +77,8 @@
     align-items: center;
     position: relative;
 
-    &:hover {
+    &:hover,
+    &.menu-active {
       background-color: var(--hover-overlay-1);
     }
 

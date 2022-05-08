@@ -35,7 +35,6 @@ const MenuItem: React.FC<MenuItemProps> = ({
   const isDisabled = disabled || (editorOnly && !location.includes('editor'));
 
   const handleMouseEnter = () => {
-    if (isDisabled) return;
     setHoveredSubMenu(name);
   };
 
@@ -57,7 +56,8 @@ const MenuItem: React.FC<MenuItemProps> = ({
       className={clsx(
         'menu-item',
         divider && 'menu-divider',
-        isDisabled && 'menu-disabled'
+        isDisabled && 'menu-disabled',
+        name && hoveredSubMenu === name && 'menu-active'
       )}
       onMouseEnter={handleMouseEnter}
       onClick={handleClick}
@@ -66,7 +66,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
     >
       {divider && <Divider role="separator" />}
       <Text className={clsx(isDisabled && 'disabled-text')}>{name}</Text>
-      {menu && (
+      {menu && !isDisabled && (
         <>
           <IconChevronRight size={18} />
           {hoveredSubMenu === name && (
