@@ -21,7 +21,7 @@ function App() {
   useWindowEvent('contextmenu', (e) => e.preventDefault());
 
   const handleSettingsChange = (newSettings: AppSettings) =>
-    dispatch({ type: 'set', payload: { settings: newSettings } });
+    dispatch({ type: 'set-settings', payload: newSettings });
   useEffect(() => {
     setAppStore(appStore);
 
@@ -36,6 +36,20 @@ function App() {
       name: 'File',
       menu: [
         { name: 'New Project', id: 'new_project' },
+        { name: 'Open Project', id: 'open_project' },
+        {
+          name: 'Open Recent',
+          id: 'open_recent',
+          disabled: appStore.recentProjects.length === 0,
+          menu: [
+            ...appStore.recentProjects.map((project) => ({
+              name: project.name,
+              id: project.path,
+            })),
+            { divider: true },
+            { name: 'Clear Recent', id: 'clear_recent' },
+          ],
+        },
         { divider: true },
         { name: 'Settings', id: 'settings' },
         { divider: true },

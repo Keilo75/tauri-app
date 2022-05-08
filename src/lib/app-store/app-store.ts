@@ -1,3 +1,5 @@
+import { ProjectInfo } from '../../models/project/project';
+
 export const appSettingsCategories = ['general'] as const;
 export type AppSettingsCategories = typeof appSettingsCategories[number];
 export interface AppSettings {
@@ -7,6 +9,7 @@ export interface AppSettings {
 
 export interface AppStore {
   settings: AppSettings;
+  recentProjects: ProjectInfo[];
 }
 
 export const defaultAppSettings: AppSettings = {
@@ -16,4 +19,5 @@ export const defaultAppSettings: AppSettings = {
 
 export const defaultAppStore: AppStore = {
   settings: defaultAppSettings,
+  recentProjects: [],
 };
