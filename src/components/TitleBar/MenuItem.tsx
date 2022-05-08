@@ -2,6 +2,7 @@ import { Divider, Text } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons';
 import clsx from 'clsx';
 import React from 'react';
+import { useLocation } from 'wouter';
 import MenuList from './MenuList';
 
 export interface IMenuItem {
@@ -10,6 +11,7 @@ export interface IMenuItem {
   menu?: IMenuItem[];
   disabled?: boolean;
   divider?: boolean;
+  editorOnly?: boolean;
 }
 
 interface MenuItemProps extends IMenuItem {
@@ -25,15 +27,20 @@ const MenuItem: React.FC<MenuItemProps> = ({
   disabled,
   divider,
   hoveredSubMenu,
+  editorOnly,
   setHoveredSubMenu,
   handleItemClick,
 }) => {
+  const [location] = useLocation();
+  const isDisabled = disabled || (editorOnly && !location.includes('editor'));
+
   const handleMouseEnter = () => {
+    if (isDisabled) return;
     setHoveredSubMenu(name);
   };
 
   const handleClick = (e: React.MouseEvent) => {
-    if (!id || disabled || menu) return;
+    if (!id || isDisabled || menu) return;
     e.stopPropagation();
 
     handleItemClick([id]);
@@ -50,14 +57,15 @@ const MenuItem: React.FC<MenuItemProps> = ({
       className={clsx(
         'menu-item',
         divider && 'menu-divider',
-        disabled && 'menu-disabled'
+        isDisabled && 'menu-disabled'
       )}
       onMouseEnter={handleMouseEnter}
       onClick={handleClick}
       role="menuitem"
+      aria-disabled={isDisabled}
     >
       {divider && <Divider role="separator" />}
-      <Text className={clsx(disabled && 'disabled-text')}>{name}</Text>
+      <Text className={clsx(isDisabled && 'disabled-text')}>{name}</Text>
       {menu && (
         <>
           <IconChevronRight size={18} />

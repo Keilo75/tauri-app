@@ -46,6 +46,7 @@ const TitleBar: React.FC<TitleBarProps> = ({ items, handleItemClick }) => {
           className="title-bar-button"
           onClick={handleMinimize}
           aria-label="minimize"
+          tabIndex={-1}
         >
           <Minimize />
         </button>
@@ -53,6 +54,7 @@ const TitleBar: React.FC<TitleBarProps> = ({ items, handleItemClick }) => {
           className="title-bar-button"
           onClick={handleMaximize}
           aria-label="toggleMaximize"
+          tabIndex={-1}
         >
           <Maximize />
         </button>
@@ -60,6 +62,7 @@ const TitleBar: React.FC<TitleBarProps> = ({ items, handleItemClick }) => {
           className="title-bar-button title-bar-button-red"
           onClick={handleClose}
           aria-label="close"
+          tabIndex={-1}
         >
           <Close />
         </button>

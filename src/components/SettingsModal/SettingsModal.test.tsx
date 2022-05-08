@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { defaultAppSettings } from '../../api/app-store/default-app-store';
+import { defaultAppSettings } from '../../lib/app-store/app-store';
 import SettingsModal, { SettingsModalProps } from './SettingsModal';
 
 const defaultProps: SettingsModalProps = {
@@ -14,7 +14,7 @@ describe('Settings Modal', () => {
     render(<SettingsModal {...defaultProps} />);
   });
 
-  it('closes the options modal', async () => {
+  it('closes the modal', async () => {
     const user = userEvent.setup();
     const close = vi.fn();
     render(<SettingsModal {...defaultProps} close={close} />);

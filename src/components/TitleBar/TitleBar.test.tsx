@@ -45,6 +45,7 @@ const mockItems: IMenuBar[] = [
     menu: [
       { name: 'Item 1', id: 'item-1' },
       { name: 'Item 2', id: 'item-2' },
+      { name: 'Item 3', id: 'item-3', editorOnly: true },
     ],
   },
 ];
@@ -66,7 +67,7 @@ describe('Menu Bars', () => {
     render(<TitleBar {...defaultProps} />);
 
     expect(screen.queryByTestId('overlay')).not.toBeInTheDocument();
-    await user.click(screen.getByRole('menuitem', { name: /Bar 1/i }));
+    await user.click(screen.getByRole('menuitem', { name: /Bar 1/ }));
 
     const overlay = screen.getByTestId('overlay');
     expect(overlay).toBeInTheDocument();
@@ -79,10 +80,10 @@ describe('Menu Bars', () => {
     const user = userEvent.setup();
     render(<TitleBar {...defaultProps} />);
 
-    await user.click(screen.getByRole('menuitem', { name: /Bar 1/i }));
+    await user.click(screen.getByRole('menuitem', { name: /Bar 1/ }));
     expect(screen.getByRole('menu')).toBeInTheDocument();
 
-    await user.click(screen.getByRole('menuitem', { name: /Bar 1/i }));
+    await user.click(screen.getByRole('menuitem', { name: /Bar 1/ }));
     expect(screen.queryByRole('menu')).not.toBeInTheDocument();
   });
 
@@ -90,10 +91,10 @@ describe('Menu Bars', () => {
     const user = userEvent.setup();
     render(<TitleBar {...defaultProps} />);
 
-    await user.click(screen.getByRole('menuitem', { name: /Bar 1/i }));
+    await user.click(screen.getByRole('menuitem', { name: /Bar 1/ }));
     expect(screen.getByRole('menu')).toBeInTheDocument();
 
-    await user.hover(screen.getByRole('menuitem', { name: /Bar 2/i }));
+    await user.hover(screen.getByRole('menuitem', { name: /Bar 2/ }));
     expect(screen.getAllByRole('menu')).toHaveLength(1);
   });
 
@@ -101,9 +102,9 @@ describe('Menu Bars', () => {
     const user = userEvent.setup();
     render(<TitleBar {...defaultProps} />);
 
-    await user.click(screen.getByRole('menuitem', { name: /Bar 1/i }));
-    await user.hover(screen.getByRole('menuitem', { name: /Item 1/i }));
-    await user.hover(screen.getByRole('menuitem', { name: /Item 1.1/i }));
+    await user.click(screen.getByRole('menuitem', { name: /Bar 1/ }));
+    await user.hover(screen.getByRole('menuitem', { name: /tem 1/ }));
+    await user.hover(screen.getByRole('menuitem', { name: /tem 1.1/ }));
     expect(screen.getAllByRole('menu')).toHaveLength(3);
   });
 
@@ -111,11 +112,11 @@ describe('Menu Bars', () => {
     const user = userEvent.setup();
     render(<TitleBar {...defaultProps} />);
 
-    await user.click(screen.getByRole('menuitem', { name: /Bar 1/i }));
-    await user.hover(screen.getByRole('menuitem', { name: /Item 1/i }));
+    await user.click(screen.getByRole('menuitem', { name: /Bar 1/ }));
+    await user.hover(screen.getByRole('menuitem', { name: /tem 1/ }));
     expect(screen.getAllByRole('menu')).toHaveLength(2);
 
-    await user.hover(screen.getByRole('menuitem', { name: /Item 2/i }));
+    await user.hover(screen.getByRole('menuitem', { name: /tem 2/ }));
     expect(screen.getAllByRole('menu')).toHaveLength(2);
   });
 
@@ -126,13 +127,13 @@ describe('Menu Bars', () => {
       <TitleBar {...defaultProps} handleItemClick={mockHandleItemClick} />
     );
 
-    await user.click(screen.getByRole('menuitem', { name: /Bar 1/i }));
-    await user.click(screen.getByRole('menuitem', { name: /Item 3/i }));
+    await user.click(screen.getByRole('menuitem', { name: /Bar 1/ }));
+    await user.click(screen.getByRole('menuitem', { name: /tem 3/ }));
     expect(mockHandleItemClick).toHaveBeenLastCalledWith(['item-3']);
 
-    await user.click(screen.getByRole('menuitem', { name: /Bar 1/i }));
-    await user.hover(screen.getByRole('menuitem', { name: /Item 1/i }));
-    await user.click(screen.getByRole('menuitem', { name: /Item 1.3/i }));
+    await user.click(screen.getByRole('menuitem', { name: /Bar 1/ }));
+    await user.hover(screen.getByRole('menuitem', { name: /tem 1/ }));
+    await user.click(screen.getByRole('menuitem', { name: /tem 1.3/ }));
     expect(mockHandleItemClick).toHaveBeenLastCalledWith([
       'item-1',
       'item-1-3',
@@ -146,8 +147,8 @@ describe('Menu Bars', () => {
       <TitleBar {...defaultProps} handleItemClick={mockHandleItemClick} />
     );
 
-    await user.click(screen.getByRole('menuitem', { name: /Bar 1/i }));
-    await user.click(screen.getByRole('menuitem', { name: /Item 1/i }));
+    await user.click(screen.getByRole('menuitem', { name: /Bar 1/ }));
+    await user.click(screen.getByRole('menuitem', { name: /tem 1/ }));
     expect(mockHandleItemClick).not.toHaveBeenCalled();
   });
 
@@ -158,17 +159,36 @@ describe('Menu Bars', () => {
       <TitleBar {...defaultProps} handleItemClick={mockHandleItemClick} />
     );
 
-    await user.click(screen.getByRole('menuitem', { name: /Bar 1/i }));
-    await user.click(screen.getByRole('menuitem', { name: /Item 4/i }));
+    await user.click(screen.getByRole('menuitem', { name: /Bar 1/ }));
+    await user.click(screen.getByRole('menuitem', { name: /tem 4/ }));
     expect(mockHandleItemClick).not.toHaveBeenCalled();
+  });
+
+  it('does not open submenus on disabled menu items', async () => {
+    const user = userEvent.setup();
+    render(
+      <TitleBar
+        {...defaultProps}
+        items={[
+          {
+            name: 'Bar 1',
+            menu: [{ name: 'Item 1', disabled: true, menu: [] }],
+          },
+        ]}
+      />
+    );
+
+    await user.click(screen.getByRole('menuitem', { name: /Bar 1/ }));
+    await user.hover(screen.getByRole('menuitem', { name: /tem 1/ }));
+    expect(screen.getAllByRole('menu')).toHaveLength(1);
   });
 
   it('closes menu on item click', async () => {
     const user = userEvent.setup();
     render(<TitleBar {...defaultProps} />);
 
-    await user.click(screen.getByRole('menuitem', { name: /Bar 1/i }));
-    await user.click(screen.getByRole('menuitem', { name: /Item 3/i }));
+    await user.click(screen.getByRole('menuitem', { name: /Bar 1/ }));
+    await user.click(screen.getByRole('menuitem', { name: /tem 3/ }));
     expect(screen.queryByRole('menu')).not.toBeInTheDocument();
   });
 
@@ -176,8 +196,19 @@ describe('Menu Bars', () => {
     const user = userEvent.setup();
     render(<TitleBar {...defaultProps} />);
 
-    await user.click(screen.getByRole('menuitem', { name: /Bar 1/i }));
+    await user.click(screen.getByRole('menuitem', { name: /Bar 1/ }));
     expect(screen.getByRole('separator')).toBeInTheDocument();
+  });
+
+  it('disables editor only items if editor is not open', async () => {
+    const user = userEvent.setup();
+    render(<TitleBar {...defaultProps} />);
+
+    await user.click(screen.getByRole('menuitem', { name: /Bar 2/ }));
+    expect(screen.getByRole('menuitem', { name: /tem 3/ })).toHaveAttribute(
+      'aria-disabled',
+      'true'
+    );
   });
 });
 

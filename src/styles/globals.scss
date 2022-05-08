@@ -12,6 +12,7 @@ body {
 :root {
   --card-background: var(--mantine-color-gray-1);
   --text-color: var(--mantine-color-gray-8);
+  --text-color-dimmed: var(--mantine-color-gray-6);
 
   @for $i from 1 through 10 {
     --hover-overlay-#{$i}: rgb(0, 0, 0, #{calc($i / 10)});
@@ -29,6 +30,7 @@ body {
 body.dark-theme {
   --card-background: var(--mantine-color-dark-6);
   --text-color: var(--mantine-color-dark-1);
+  --text-color-dimmed: var(--mantine-color-dark-2);
 
   @for $i from 1 through 10 {
     --hover-overlay-#{$i}: rgb(255, 255, 255, #{calc($i / 10)});
@@ -37,4 +39,9 @@ body.dark-theme {
 
 .disabled-text {
   color: var(--hover-overlay-3);
+}
+
+.main-app {
+  height: calc(100vh - 30px);
+  padding: 0;
 }

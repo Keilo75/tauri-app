@@ -34,6 +34,7 @@ const MenuBar: React.FC<MenuBarProps> = ({
         onMouseEnter={openMenu}
         role="menuitem"
         aria-expanded={name === hoveredMenu}
+        tabIndex={-1}
       >
         <Text>{name}</Text>
       </button>

@@ -56,8 +56,8 @@
         "close": true,
         "startDragging": true
       },
-      "path": {
-        "all": true
+      "dialog": {
+        "open": true
       }
     },
     "windows": [

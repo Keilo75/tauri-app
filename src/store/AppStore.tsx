@@ -1,13 +1,25 @@
-import React, { createContext, useEffect, useReducer, useState } from 'react';
-import { AppSettings, AppStore, getAppStore } from '../api/app-store/app-store';
-import { defaultAppStore } from '../api/app-store/default-app-store';
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useReducer,
+  useState,
+} from 'react';
+import {
+  AppSettings,
+  AppStore,
+  defaultAppSettings,
+  defaultAppStore,
+} from '../lib/app-store/app-store';
+import { getAppStore } from '../lib/invoke';
 
 export type AppStoreAction =
   | {
       type: 'set';
       payload: AppStore;
     }
-  | { type: 'set-settings'; payload: AppSettings };
+  | { type: 'set-settings'; payload: AppSettings }
+  | { type: 'use-defaults' };
 
 const reducer = (state: AppStore, action: AppStoreAction): AppStore => {
   switch (action.type) {
@@ -16,6 +28,9 @@ const reducer = (state: AppStore, action: AppStoreAction): AppStore => {
 
     case 'set-settings':
       return { ...state, settings: action.payload };
+
+    case 'use-defaults':
+      return defaultAppStore;
 
     default:
       throw new Error('Not implemented');
@@ -27,15 +42,41 @@ export const AppStoreContext = createContext<{
   dispatch: (action: AppStoreAction) => void;
 }>({ appStore: defaultAppStore, dispatch: () => null });
 
+export const useSettings = <T extends keyof AppSettings>(
+  option: T
+): AppSettings[T] => {
+  const { appStore } = useContext(AppStoreContext);
+
+  return appStore.settings[option];
+};
+
 const AppStoreProvider: React.FC = ({ children }) => {
   const [appStore, dispatch] = useReducer(reducer, defaultAppStore);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    getAppStore().then((store) => {
-      setLoaded(true);
-      dispatch({ type: 'set', payload: store });
-    });
+    getAppStore()
+      .then((store) => {
+        const unsetSettings = Object.entries(defaultAppSettings)
+          .filter((entry) => !Object.keys(store.settings).includes(entry[0]))
+          .reduce((acc, cur) => {
+            const [key, value] = cur;
+            return { ...acc, [key]: value };
+          }, {});
+
+        setLoaded(true);
+        dispatch({
+          type: 'set',
+          payload: {
+            ...store,
+            settings: { ...store.settings, ...unsetSettings },
+          },
+        });
+      })
+      .catch(() => {
+        setLoaded(true);
+        dispatch({ type: 'use-defaults' });
+      });
   }, []);
 
   return (

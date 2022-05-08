@@ -5,6 +5,7 @@ import {
   Radio,
   RadioGroup,
   Stack,
+  Switch,
   Tabs,
   Title,
 } from '@mantine/core';
@@ -12,7 +13,7 @@ import { useForm } from '@mantine/form';
 import { useDidUpdate } from '@mantine/hooks';
 import { IconSettings, IconTool, IconX } from '@tabler/icons';
 import React from 'react';
-import { AppSettings } from '../../api/app-store/app-store';
+import { AppSettings } from '../../lib/app-store/app-store';
 import './SettingsModal.scss';
 
 export interface SettingsModalProps {
@@ -59,7 +60,15 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
           </RadioGroup>
         </Tabs.Tab>
         <Tabs.Tab label="Developer" icon={<IconTool size="15" />}>
-          <Title order={2}>Developer</Title>
+          <Title order={2} mb="md">
+            Developer
+          </Title>
+          <Switch
+            label="Empty folder on new project"
+            {...form.getInputProps('developer.emptyFolderOnNewProject', {
+              type: 'checkbox',
+            })}
+          />
         </Tabs.Tab>
       </Tabs>
       <Group position="right">

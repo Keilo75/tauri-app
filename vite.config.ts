@@ -11,6 +11,7 @@ export default defineConfig({
     setupFiles: 'src/__tests__/setupTests.ts',
     globals: true,
     mockReset: true,
+    clearMocks: true,
     coverage: {
       reporter: ['text', 'json', 'html'],
     },
