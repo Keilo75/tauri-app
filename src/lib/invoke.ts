@@ -16,13 +16,15 @@ export const isFolderEmpty = async (folder: string): Promise<boolean> => {
 };
 
 export const saveProject = async (
-  name: string,
-  folder: string,
+  path: string,
   project: Project
 ): Promise<void> => {
   await invoke('save_project', {
-    name,
-    folder,
+    path,
     project: JSON.stringify(project),
   });
+};
+
+export const loadProject = async (path: string): Promise<string> => {
+  return await invoke('load_project', { path });
 };

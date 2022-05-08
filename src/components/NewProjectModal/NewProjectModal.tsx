@@ -11,20 +11,22 @@ import { IconFolder } from '@tabler/icons';
 import React, { useState } from 'react';
 import { validateProjectName } from '../../lib/validater/project-name/project-name';
 import { validateProjectPath } from '../../lib/validater/project-path/project-path';
-import { dialog } from '@tauri-apps/api';
+import { dialog, path } from '@tauri-apps/api';
 import { defaultProject, ProjectInfo } from '../../models/project/project';
-import { useLocation } from 'wouter';
 import { saveProject } from '../../lib/invoke';
 
 export interface NewProjectModalProps {
+  openProject: (folder: string) => Promise<void>;
   close: () => void;
 }
 
 type FormErrors = Record<keyof ProjectInfo, string | undefined>;
 
-const NewProjectModal: React.FC<NewProjectModalProps> = ({ close }) => {
+const NewProjectModal: React.FC<NewProjectModalProps> = ({
+  close,
+  openProject,
+}) => {
   const [loading, setLoading] = useState(false);
-  const [, setLocation] = useLocation();
 
   const form = useForm<ProjectInfo>({
     initialValues: {
@@ -39,13 +41,15 @@ const NewProjectModal: React.FC<NewProjectModalProps> = ({ close }) => {
     if (Object.values(errors).some((entry) => entry !== undefined)) return;
 
     setLoading(true);
+
+    const savePath = await path.join(values.path, `${values.name}.botlab`);
     try {
-      await saveProject(values.name, values.path, defaultProject);
+      await saveProject(savePath, defaultProject);
     } catch {}
 
     setLoading(false);
+    openProject(savePath);
     close();
-    setLocation(encodeURI(`/editor/${values.path}`));
   };
 
   const validateValues = async (values: ProjectInfo): Promise<FormErrors> => {

@@ -9,20 +9,16 @@ import { dialog } from '@tauri-apps/api';
 export interface HomeProps {
   recentProjects: ProjectInfo[];
   openNewProjectModal: () => void;
+  handleOpenProjectClick: () => void;
 }
 
-const Home: React.FC<HomeProps> = ({ recentProjects, openNewProjectModal }) => {
+const Home: React.FC<HomeProps> = ({
+  recentProjects,
+  openNewProjectModal,
+  handleOpenProjectClick,
+}) => {
   const handleNewProjectClick = () => {
     openNewProjectModal();
-  };
-
-  const handleOpenProjectClick = async () => {
-    const selectedFile = await dialog.open({
-      filters: [{ extensions: ['botlab'], name: 'Botlab' }],
-    });
-    if (!selectedFile || Array.isArray(selectedFile)) return;
-
-    console.log(selectedFile);
   };
 
   return (

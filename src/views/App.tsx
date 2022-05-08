@@ -7,10 +7,11 @@ import { useContext, useEffect, useState } from 'react';
 import { AppStoreContext } from '../store/AppStore';
 import { AppSettings } from '../lib/app-store/app-store';
 import NewProjectModal from '../components/NewProjectModal/NewProjectModal';
-import { setAppStore } from '../lib/invoke';
+import { loadProject, setAppStore } from '../lib/invoke';
 import Home from './Home/Home';
 import { Route, useLocation } from 'wouter';
 import Editor from './Editor/Editor';
+import { dialog } from '@tauri-apps/api';
 
 function App() {
   const { appStore, dispatch } = useContext(AppStoreContext);
@@ -62,9 +63,28 @@ function App() {
       settings: settingsModalHandler.open,
       new_project: newProjectModalHandler.open,
       close_editor: () => setLocation('/'),
+      open_project: handleOpenProjectClick,
     };
 
     actions[ids[0]](ids.slice(1));
+  };
+
+  const handleOpenProjectClick = async () => {
+    const selectedFile = await dialog.open({
+      filters: [{ extensions: ['botlab'], name: 'Botlab' }],
+    });
+    if (!selectedFile || Array.isArray(selectedFile)) return;
+
+    openProject(selectedFile);
+  };
+
+  const openProject = async (path: string) => {
+    try {
+      const project = await loadProject(path);
+      console.log(project);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -91,6 +111,7 @@ function App() {
           <Home
             recentProjects={[]}
             openNewProjectModal={newProjectModalHandler.open}
+            handleOpenProjectClick={handleOpenProjectClick}
           />
         </Route>
         <Route path="/editor/:path">
@@ -114,7 +135,10 @@ function App() {
         onClose={newProjectModalHandler.close}
         title="New Project"
       >
-        <NewProjectModal close={newProjectModalHandler.close} />
+        <NewProjectModal
+          close={newProjectModalHandler.close}
+          openProject={openProject}
+        />
       </Modal>
     </MantineProvider>
   );

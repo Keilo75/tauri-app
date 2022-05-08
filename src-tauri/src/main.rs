@@ -9,7 +9,8 @@ fn main() {
             app_store::get_app_store,
             app_store::set_app_store,
             validate_paths::is_folder_empty,
-            save_project::save_project
+            save_project::save_project,
+            save_project::load_project,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
