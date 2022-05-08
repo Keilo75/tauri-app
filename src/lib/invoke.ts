@@ -1,4 +1,5 @@
 import { invoke } from '@tauri-apps/api';
+import { Project } from '../models/project/project';
 import { AppStore } from './app-store/app-store';
 
 export const getAppStore = async (): Promise<AppStore> => {
@@ -12,4 +13,16 @@ export const setAppStore = async (appStore: AppStore): Promise<void> => {
 
 export const isFolderEmpty = async (folder: string): Promise<boolean> => {
   return await invoke('is_folder_empty', { folder });
+};
+
+export const saveProject = async (
+  name: string,
+  folder: string,
+  project: Project
+): Promise<void> => {
+  await invoke('save_project', {
+    name,
+    folder,
+    project: JSON.stringify(project),
+  });
 };

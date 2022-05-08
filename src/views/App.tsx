@@ -93,7 +93,7 @@ function App() {
             openNewProjectModal={newProjectModalHandler.open}
           />
         </Route>
-        <Route path="/editor/:name/:path">
+        <Route path="/editor/:path">
           <Editor />
         </Route>
       </AppShell>

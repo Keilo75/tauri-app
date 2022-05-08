@@ -13,8 +13,9 @@ import React, { useState } from 'react';
 import { validateProjectName } from '../../lib/validater/project-name/project-name';
 import { validateProjectPath } from '../../lib/validater/project-path/project-path';
 import { dialog } from '@tauri-apps/api';
-import { ProjectInfo } from '../../models/project/project';
+import { defaultProject, ProjectInfo } from '../../models/project/project';
 import { useLocation } from 'wouter';
+import { saveProject } from '../../lib/invoke';
 
 export interface NewProjectModalProps {
   close: () => void;
@@ -27,12 +28,13 @@ const NewProjectModal: React.FC<NewProjectModalProps> = ({
   close,
   emptyFolderOnNewProject,
 }) => {
+  const [loading, setLoading] = useState(false);
   const [, setLocation] = useLocation();
 
   const form = useForm<ProjectInfo>({
     initialValues: {
-      name: '',
-      path: '',
+      name: 'TauriBot',
+      path: 'C:\\Users\\gesch\\Documents\\BotLab Bots\\TauriBot',
     },
   });
 
@@ -41,8 +43,14 @@ const NewProjectModal: React.FC<NewProjectModalProps> = ({
     form.setErrors(errors);
     if (Object.values(errors).some((entry) => entry !== undefined)) return;
 
+    setLoading(true);
+    try {
+      await saveProject(values.name, values.path, defaultProject);
+    } catch {}
+
+    setLoading(false);
     close();
-    setLocation(encodeURI(`/editor/${values.name}/${values.path}`));
+    setLocation(encodeURI(`/editor/${values.path}`));
   };
 
   const validateValues = async (values: ProjectInfo): Promise<FormErrors> => {
@@ -63,6 +71,7 @@ const NewProjectModal: React.FC<NewProjectModalProps> = ({
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
+      <LoadingOverlay visible={loading} />
       {emptyFolderOnNewProject && (
         <Alert icon={<IconAlertCircle size={16} />} color="orange" mb="md">
           Empty folder on new project is enabled.
