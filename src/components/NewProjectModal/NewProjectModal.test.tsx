@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { validateProjectPath } from '../../lib/validater/project-path/project-path';
 import NewProjectModal, { NewProjectModalProps } from './NewProjectModal';
 
 vi.mock('@tauri-apps/api', () => {
@@ -16,7 +15,6 @@ vi.mock('../../lib/validater/project-path/project-path', () => ({
 
 const defaultProps: NewProjectModalProps = {
   close: vi.fn(),
-  emptyFolderOnNewProject: false,
 };
 
 describe('New Project Modal', () => {
@@ -31,14 +29,6 @@ describe('New Project Modal', () => {
 
     await user.click(screen.getByRole('button', { name: /Cancel/ }));
     expect(close).toHaveBeenCalled();
-  });
-
-  it('shows the empty project alert', async () => {
-    render(
-      <NewProjectModal {...defaultProps} emptyFolderOnNewProject={true} />
-    );
-
-    expect(screen.getByRole('alert')).toBeInTheDocument();
   });
 
   it('shows errors on invalid inputs', async () => {

@@ -1,6 +1,5 @@
 import {
   ActionIcon,
-  Alert,
   Button,
   Group,
   LoadingOverlay,
@@ -8,7 +7,7 @@ import {
   Tooltip,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { IconAlertCircle, IconFolder } from '@tabler/icons';
+import { IconFolder } from '@tabler/icons';
 import React, { useState } from 'react';
 import { validateProjectName } from '../../lib/validater/project-name/project-name';
 import { validateProjectPath } from '../../lib/validater/project-path/project-path';
@@ -19,15 +18,11 @@ import { saveProject } from '../../lib/invoke';
 
 export interface NewProjectModalProps {
   close: () => void;
-  emptyFolderOnNewProject: boolean;
 }
 
 type FormErrors = Record<keyof ProjectInfo, string | undefined>;
 
-const NewProjectModal: React.FC<NewProjectModalProps> = ({
-  close,
-  emptyFolderOnNewProject,
-}) => {
+const NewProjectModal: React.FC<NewProjectModalProps> = ({ close }) => {
   const [loading, setLoading] = useState(false);
   const [, setLocation] = useLocation();
 
@@ -72,11 +67,6 @@ const NewProjectModal: React.FC<NewProjectModalProps> = ({
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <LoadingOverlay visible={loading} />
-      {emptyFolderOnNewProject && (
-        <Alert icon={<IconAlertCircle size={16} />} color="orange" mb="md">
-          Empty folder on new project is enabled.
-        </Alert>
-      )}
       <TextInput label="Project Name" mb="md" {...form.getInputProps('name')} />
       <TextInput
         label="Project Path"

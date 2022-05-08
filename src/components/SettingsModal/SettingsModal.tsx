@@ -63,12 +63,6 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
           <Title order={2} mb="md">
             Developer
           </Title>
-          <Switch
-            label="Empty folder on new project"
-            {...form.getInputProps('developer.emptyFolderOnNewProject', {
-              type: 'checkbox',
-            })}
-          />
         </Tabs.Tab>
       </Tabs>
       <Group position="right">

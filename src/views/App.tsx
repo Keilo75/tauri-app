@@ -114,12 +114,7 @@ function App() {
         onClose={newProjectModalHandler.close}
         title="New Project"
       >
-        <NewProjectModal
-          emptyFolderOnNewProject={
-            appStore.settings['developer.emptyFolderOnNewProject']
-          }
-          close={newProjectModalHandler.close}
-        />
+        <NewProjectModal close={newProjectModalHandler.close} />
       </Modal>
     </MantineProvider>
   );
