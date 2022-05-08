@@ -21,8 +21,7 @@ export interface NewProjectModalProps {
   emptyFolderOnNewProject: boolean;
 }
 
-type FormValues = Omit<ProjectInfo, 'createdAt'>;
-type FormErrors = Record<keyof FormValues, string | undefined>;
+type FormErrors = Record<keyof ProjectInfo, string | undefined>;
 
 const NewProjectModal: React.FC<NewProjectModalProps> = ({
   close,
@@ -30,23 +29,23 @@ const NewProjectModal: React.FC<NewProjectModalProps> = ({
 }) => {
   const [, setLocation] = useLocation();
 
-  const form = useForm<FormValues>({
+  const form = useForm<ProjectInfo>({
     initialValues: {
       name: '',
       path: '',
     },
   });
 
-  const handleSubmit = async (values: FormValues) => {
+  const handleSubmit = async (values: ProjectInfo) => {
     const errors = await validateValues(values);
     form.setErrors(errors);
     if (Object.values(errors).some((entry) => entry !== undefined)) return;
 
     close();
-    setLocation('/editor');
+    setLocation(encodeURI(`/editor/${values.name}/${values.path}`));
   };
 
-  const validateValues = async (values: FormValues): Promise<FormErrors> => {
+  const validateValues = async (values: ProjectInfo): Promise<FormErrors> => {
     const errors: FormErrors = {
       name: validateProjectName(values.name),
       path: await validateProjectPath(values.path),

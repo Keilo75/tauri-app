@@ -10,6 +10,7 @@ import NewProjectModal from '../components/NewProjectModal/NewProjectModal';
 import { setAppStore } from '../lib/invoke';
 import Home from './Home/Home';
 import { Route, useLocation } from 'wouter';
+import Editor from './Editor/Editor';
 
 function App() {
   const { appStore, dispatch } = useContext(AppStoreContext);
@@ -77,6 +78,9 @@ function App() {
             recentProjects={[]}
             openNewProjectModal={newProjectModalHandler.open}
           />
+        </Route>
+        <Route path="/editor/:name/:path">
+          <Editor />
         </Route>
       </AppShell>
       <Modal
