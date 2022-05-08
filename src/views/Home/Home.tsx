@@ -4,6 +4,7 @@ import React from 'react';
 import Label from '../../components/Label/Label';
 import { ProjectInfo } from '../../models/project/project';
 import './Home.scss';
+import { dialog } from '@tauri-apps/api';
 
 export interface HomeProps {
   recentProjects: ProjectInfo[];
@@ -11,9 +12,17 @@ export interface HomeProps {
 }
 
 const Home: React.FC<HomeProps> = ({ recentProjects, openNewProjectModal }) => {
-  const handleNewProjectClick = (e: React.MouseEvent) => {
-    e.preventDefault();
+  const handleNewProjectClick = () => {
     openNewProjectModal();
+  };
+
+  const handleOpenProjectClick = async () => {
+    const selectedFile = await dialog.open({
+      filters: [{ extensions: ['botlab'], name: 'Botlab' }],
+    });
+    if (!selectedFile || Array.isArray(selectedFile)) return;
+
+    console.log(selectedFile);
   };
 
   return (
@@ -32,7 +41,11 @@ const Home: React.FC<HomeProps> = ({ recentProjects, openNewProjectModal }) => {
               <IconPlus />
               New Project
             </Anchor>
-            <Anchor href="#" className="home-action">
+            <Anchor
+              href="#"
+              className="home-action"
+              onClick={handleOpenProjectClick}
+            >
               <IconFolder />
               Open Project
             </Anchor>
