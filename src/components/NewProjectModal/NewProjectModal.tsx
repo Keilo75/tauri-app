@@ -30,8 +30,8 @@ const NewProjectModal: React.FC<NewProjectModalProps> = ({
 
   const form = useForm<ProjectInfo>({
     initialValues: {
-      name: 'TauriBot',
-      path: 'C:\\Users\\gesch\\Documents\\BotLab Bots\\TauriBot',
+      name: '',
+      path: '',
     },
   });
 
@@ -43,11 +43,8 @@ const NewProjectModal: React.FC<NewProjectModalProps> = ({
     setLoading(true);
 
     const savePath = await path.join(values.path, `${values.name}.botlab`);
-    try {
-      await saveProject(savePath, defaultProject);
-    } catch {}
+    await saveProject(savePath, defaultProject);
 
-    setLoading(false);
     openProject(savePath);
     close();
   };

@@ -14,6 +14,7 @@ const mockRecentProjects: ProjectInfo[] = Array(50)
 const defaultProps: HomeProps = {
   recentProjects: mockRecentProjects.slice(0, 5),
   openNewProjectModal: vi.fn(),
+  handleOpenProjectClick: vi.fn(),
 };
 
 describe('Home', () => {

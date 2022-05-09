@@ -25,6 +25,10 @@ export const saveProject = async (
   });
 };
 
+export const canProjectBeLoaded = async (path: string): Promise<void> => {
+  return await invoke('can_project_be_loaded', { path });
+};
+
 export const loadProject = async (path: string): Promise<string> => {
   return await invoke('load_project', { path });
 };

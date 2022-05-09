@@ -21,7 +21,7 @@ pub fn save_project(path: String, project: String) {
 }
 
 #[tauri::command]
-pub fn load_project(path: String) -> Result<String, String> {
+pub fn can_project_be_loaded(path: String) -> Result<(), String> {
     let file_path = Path::new(&path);
 
     if !file_path.exists() {
@@ -43,5 +43,13 @@ pub fn load_project(path: String) -> Result<String, String> {
         return Err("File is corrupted".into());
     }
 
+    Ok(())
+}
+
+#[tauri::command]
+pub fn load_project(path: String) -> Result<String, String> {
+    let file_path = Path::new(&path);
+    let file_content = fs::read_to_string(file_path).unwrap();
+    let project = file_content.lines().collect::<Vec<_>>()[0].to_string();
     Ok(project)
 }

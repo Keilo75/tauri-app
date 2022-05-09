@@ -10,6 +10,7 @@ fn main() {
             app_store::set_app_store,
             validate_paths::is_folder_empty,
             save_project::save_project,
+            save_project::can_project_be_loaded,
             save_project::load_project,
         ])
         .run(tauri::generate_context!())

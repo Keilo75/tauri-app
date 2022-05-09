@@ -1,16 +1,16 @@
 import { AppShell, Header, MantineProvider, Modal } from '@mantine/core';
-import TitleBar from '../components/TitleBar/TitleBar';
-import { IMenuBar } from '../components/TitleBar/MenuBar';
-import SettingsModal from '../components/SettingsModal/SettingsModal';
+import TitleBar from '../../components/TitleBar/TitleBar';
+import { IMenuBar } from '../../components/TitleBar/MenuBar';
+import SettingsModal from '../../components/SettingsModal/SettingsModal';
 import { useDisclosure, useWindowEvent } from '@mantine/hooks';
 import { useContext, useEffect, useState } from 'react';
-import { AppStoreContext } from '../store/AppStore';
-import { AppSettings } from '../lib/app-store/app-store';
-import NewProjectModal from '../components/NewProjectModal/NewProjectModal';
-import { loadProject, setAppStore } from '../lib/invoke';
-import Home from './Home/Home';
+import { AppStoreContext } from '../../store/AppStore';
+import { AppSettings } from '../../lib/app-store/app-store';
+import NewProjectModal from '../../components/NewProjectModal/NewProjectModal';
+import { canProjectBeLoaded, setAppStore } from '../../lib/invoke';
+import Home from '../Home/Home';
 import { Route, useLocation } from 'wouter';
-import Editor from './Editor/Editor';
+import Editor from '../Editor/Editor';
 import { dialog } from '@tauri-apps/api';
 
 function App() {
@@ -80,8 +80,7 @@ function App() {
 
   const openProject = async (path: string) => {
     try {
-      const project = await loadProject(path);
-      console.log(project);
+      await canProjectBeLoaded(path);
     } catch (err) {
       console.log(err);
     }

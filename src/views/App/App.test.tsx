@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import App from '../../views/App';
+import App from './App';
 
 vi.mock('@tauri-apps/api');
 

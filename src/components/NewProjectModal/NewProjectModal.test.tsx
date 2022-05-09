@@ -3,8 +3,15 @@ import userEvent from '@testing-library/user-event';
 import NewProjectModal, { NewProjectModalProps } from './NewProjectModal';
 
 vi.mock('@tauri-apps/api', () => {
-  return { dialog: { open: () => 'selected path' } };
+  return {
+    dialog: { open: () => 'selected path' },
+    path: { join: () => 'save path' },
+  };
 });
+
+vi.mock('../../lib/invoke', () => ({
+  saveProject: () => new Promise<void>((resolve) => resolve()),
+}));
 
 vi.mock('../../lib/validater/project-path/project-path', () => ({
   validateProjectPath: (path: string) => {
@@ -15,6 +22,7 @@ vi.mock('../../lib/validater/project-path/project-path', () => ({
 
 const defaultProps: NewProjectModalProps = {
   close: vi.fn(),
+  openProject: vi.fn(),
 };
 
 describe('New Project Modal', () => {
@@ -57,7 +65,14 @@ describe('New Project Modal', () => {
   it('creates a new project', async () => {
     const user = userEvent.setup();
     const close = vi.fn();
-    render(<NewProjectModal {...defaultProps} close={close} />);
+    const openProject = vi.fn();
+    render(
+      <NewProjectModal
+        {...defaultProps}
+        close={close}
+        openProject={openProject}
+      />
+    );
 
     const projectNameInput = screen.getByLabelText('Project Name');
     const projectPathInput = screen.getByLabelText('Project Path');
@@ -71,6 +86,6 @@ describe('New Project Modal', () => {
     expect(projectPathInput).toHaveAttribute('aria-invalid', 'false');
 
     expect(close).toHaveBeenCalled();
-    expect(window.location.href).toContain('editor');
+    expect(openProject).toHaveBeenCalledWith('save path');
   });
 });
