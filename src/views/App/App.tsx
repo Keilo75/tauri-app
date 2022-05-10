@@ -3,8 +3,8 @@ import TitleBar from '../../components/TitleBar/TitleBar';
 import { IMenuBar } from '../../components/TitleBar/MenuBar';
 import SettingsModal from '../../components/SettingsModal/SettingsModal';
 import { useDisclosure, useWindowEvent } from '@mantine/hooks';
-import { useContext, useEffect, useState } from 'react';
-import { AppStoreContext } from '../../store/AppStore';
+import { useContext, useEffect } from 'react';
+import { AppStoreContext } from '../../store/AppStore/AppStore';
 import { AppSettings } from '../../lib/app-store/app-store';
 import NewProjectModal from '../../components/NewProjectModal/NewProjectModal';
 import { canProjectBeLoaded, setAppStore } from '../../lib/invoke';
@@ -81,8 +81,11 @@ function App() {
   const openProject = async (path: string) => {
     try {
       await canProjectBeLoaded(path);
+
+      setLocation('/');
+      setLocation(`/editor/${encodeURI(path)}`);
     } catch (err) {
-      console.log(err);
+      // TODO: Handle Error
     }
   };
 

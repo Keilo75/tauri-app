@@ -8,10 +8,10 @@ import React, {
 import {
   AppSettings,
   AppStore,
-  defaultAppSettings,
   defaultAppStore,
-} from '../lib/app-store/app-store';
-import { getAppStore } from '../lib/invoke';
+} from '../../lib/app-store/app-store';
+import { hydrateUnsetValues } from '../../lib/helpers/hydrate-unset-values';
+import { getAppStore } from '../../lib/invoke';
 
 export type AppStoreAction =
   | {
@@ -57,20 +57,12 @@ const AppStoreProvider: React.FC = ({ children }) => {
   useEffect(() => {
     getAppStore()
       .then((store) => {
-        const unsetSettings = Object.entries(defaultAppSettings)
-          .filter((entry) => !Object.keys(store.settings).includes(entry[0]))
-          .reduce((acc, cur) => {
-            const [key, value] = cur;
-            return { ...acc, [key]: value };
-          }, {});
+        const hydratedStore = hydrateUnsetValues({ ...store }, defaultAppStore);
 
         setLoaded(true);
         dispatch({
           type: 'set',
-          payload: {
-            ...store,
-            settings: { ...store.settings, ...unsetSettings },
-          },
+          payload: hydratedStore,
         });
       })
       .catch(() => {

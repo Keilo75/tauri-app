@@ -50,6 +50,6 @@ pub fn can_project_be_loaded(path: String) -> Result<(), String> {
 pub fn load_project(path: String) -> Result<String, String> {
     let file_path = Path::new(&path);
     let file_content = fs::read_to_string(file_path).unwrap();
-    let project = file_content.lines().collect::<Vec<_>>()[0].to_string();
+    let project = file_content.lines().collect::<Vec<_>>()[1].to_string();
     Ok(project)
 }
