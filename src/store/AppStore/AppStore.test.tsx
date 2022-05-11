@@ -1,5 +1,4 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { defaultAppStore } from '../../lib/app-store/app-store';
 import AppStoreProvider from './AppStore';
 import { getAppStore } from '../../lib/invoke';
@@ -8,9 +7,7 @@ vi.mock('../../lib/invoke', () => ({ getAppStore: vi.fn() }));
 
 describe('App Store', () => {
   it('renders no children at first', () => {
-    vi.mocked(getAppStore).mockReturnValue(
-      new Promise((resolve) => resolve(defaultAppStore))
-    );
+    vi.mocked(getAppStore).mockResolvedValue(defaultAppStore);
 
     render(<AppStoreProvider>some text</AppStoreProvider>);
 
@@ -18,9 +15,7 @@ describe('App Store', () => {
   });
 
   it('loads the app store from disk', async () => {
-    vi.mocked(getAppStore).mockReturnValue(
-      new Promise((resolve) => resolve(defaultAppStore))
-    );
+    vi.mocked(getAppStore).mockResolvedValue(defaultAppStore);
 
     render(<AppStoreProvider>some text</AppStoreProvider>);
 

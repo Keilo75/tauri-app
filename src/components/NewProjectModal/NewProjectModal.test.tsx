@@ -1,23 +1,20 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import NewProjectModal, { NewProjectModalProps } from './NewProjectModal';
+import { dialog, path } from '@tauri-apps/api';
+import { validateProjectPath } from '../../lib/validater/project-path/project-path';
 
-vi.mock('@tauri-apps/api', () => {
-  return {
-    dialog: { open: () => 'selected path' },
-    path: { join: () => 'save path' },
-  };
-});
-
-vi.mock('../../lib/invoke', () => ({
-  saveProject: () => new Promise<void>((resolve) => resolve()),
+vi.mock('@tauri-apps/api', () => ({
+  dialog: {
+    open: vi.fn(),
+  },
+  path: { join: vi.fn() },
 }));
 
+vi.mock('../../lib/invoke', () => ({ saveProject: vi.fn() }));
+
 vi.mock('../../lib/validater/project-path/project-path', () => ({
-  validateProjectPath: (path: string) => {
-    if (path === 'path') return undefined;
-    return 'error';
-  },
+  validateProjectPath: vi.fn(),
 }));
 
 const defaultProps: NewProjectModalProps = {
@@ -40,6 +37,8 @@ describe('New Project Modal', () => {
   });
 
   it('shows errors on invalid inputs', async () => {
+    vi.mocked(validateProjectPath).mockResolvedValue('error');
+
     const user = userEvent.setup();
     render(<NewProjectModal {...defaultProps} />);
 
@@ -55,6 +54,8 @@ describe('New Project Modal', () => {
   });
 
   it('handles browse click', async () => {
+    vi.mocked(dialog.open).mockResolvedValue('selected path');
+
     const user = userEvent.setup();
     render(<NewProjectModal {...defaultProps} />);
 
@@ -63,6 +64,8 @@ describe('New Project Modal', () => {
   });
 
   it('creates a new project', async () => {
+    vi.mocked(path.join).mockResolvedValue('save path');
+
     const user = userEvent.setup();
     const close = vi.fn();
     const openProject = vi.fn();
