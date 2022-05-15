@@ -6,7 +6,7 @@ import './Sidebar.scss';
 
 const Sidebar: React.FC = () => {
   const { dragAreaRef, dragAreaHovered, dragAreaWidth, resizableRef } =
-    useDragArea(200, {
+    useDragArea(250, {
       minWidth: 150,
     });
 
@@ -16,10 +16,13 @@ const Sidebar: React.FC = () => {
       withBorder
       style={{ width: dragAreaWidth }}
       ref={resizableRef}
+      role="navigation"
     >
       <div
         className={clsx('drag-area', dragAreaHovered && 'drag-area-active')}
+        aria-hidden={!dragAreaHovered}
         ref={dragAreaRef}
+        role="separator"
       />
     </Paper>
   );
