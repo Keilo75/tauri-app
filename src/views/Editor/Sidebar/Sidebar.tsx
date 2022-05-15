@@ -5,7 +5,7 @@ import { useDragArea } from '../../../hooks/useDragArea';
 import './Sidebar.scss';
 
 const Sidebar: React.FC = () => {
-  const { dragAreaRef, dragAreaActive, dragAreaWidth, resizableRef } =
+  const { dragAreaRef, dragAreaHovered, dragAreaWidth, resizableRef } =
     useDragArea(200, {
       minWidth: 150,
     });
@@ -17,9 +17,8 @@ const Sidebar: React.FC = () => {
       style={{ width: dragAreaWidth }}
       ref={resizableRef}
     >
-      {dragAreaWidth}
       <div
-        className={clsx('drag-area', dragAreaActive && 'drag-area-active')}
+        className={clsx('drag-area', dragAreaHovered && 'drag-area-active')}
         ref={dragAreaRef}
       />
     </Paper>

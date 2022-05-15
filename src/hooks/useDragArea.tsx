@@ -13,6 +13,8 @@ export const useDragArea = (
 
   const dragAreaRef = useRef<HTMLDivElement>(null);
   const resizableRef = useRef<HTMLDivElement>(null);
+  const hoverTimeout = useRef<number>();
+  const [dragAreaHovered, setDragAreaHovered] = useState(false);
   const [dragAreaActive, setDragAreaActive] = useState(false);
   const [dragAreaWidth, setDragAreaWidth] = useState(initialWidth);
 
@@ -60,19 +62,50 @@ export const useDragArea = (
         }
       };
 
+      const handleMouseEnter = () => {
+        hoverTimeout.current = setTimeout(() => {
+          setDragAreaHovered(true);
+          hoverTimeout.current = undefined;
+        }, 500);
+      };
+
+      const handleMouseLeave = () => {
+        setDragAreaHovered(false);
+
+        if (hoverTimeout.current !== undefined) {
+          clearInterval(hoverTimeout.current);
+          hoverTimeout.current = undefined;
+        }
+      };
+
       document.addEventListener('mouseup', handleMouseUp);
       document.addEventListener('mousemove', handleMouseMove);
       dragAreaRef.current.addEventListener('mousedown', handleMouseDown);
+      dragAreaRef.current.addEventListener('mouseenter', handleMouseEnter);
+      dragAreaRef.current.addEventListener('mouseleave', handleMouseLeave);
       window.addEventListener('resize', handleWindowResize);
 
       return () => {
         document.removeEventListener('mouseup', handleMouseUp);
         document.removeEventListener('mousemove', handleMouseMove);
         dragAreaRef.current?.removeEventListener('mousedown', handleMouseDown);
+        dragAreaRef.current?.removeEventListener(
+          'mouseenter',
+          handleMouseEnter
+        );
+        dragAreaRef.current?.removeEventListener(
+          'mouseleave',
+          handleMouseLeave
+        );
         window.removeEventListener('resize', handleWindowResize);
       };
     }
   }, [dragAreaActive]);
 
-  return { dragAreaRef, dragAreaActive, dragAreaWidth, resizableRef };
+  return {
+    dragAreaRef,
+    dragAreaHovered: dragAreaActive || dragAreaHovered,
+    dragAreaWidth,
+    resizableRef,
+  };
 };

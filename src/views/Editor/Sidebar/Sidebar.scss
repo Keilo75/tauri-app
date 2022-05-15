@@ -13,6 +13,7 @@
     background-color: var(--mantine-primary-color);
     cursor: e-resize;
     opacity: 0;
+    transition: opacity 0.1s;
 
     &.drag-area-active {
       opacity: 1;
