@@ -10,6 +10,7 @@ body {
 }
 
 :root {
+  --mantine-primary-color: var(--mantine-color-blue-6);
   --card-background: var(--mantine-color-gray-1);
   --text-color: var(--mantine-color-gray-8);
   --text-color-dimmed: var(--mantine-color-gray-6);
@@ -28,6 +29,7 @@ body {
 }
 
 body.dark-theme {
+  --mantine-primary-color: var(--mantine-color-blue-8);
   --card-background: var(--mantine-color-dark-6);
   --text-color: var(--mantine-color-dark-1);
   --text-color-dimmed: var(--mantine-color-dark-2);

@@ -1,9 +1,10 @@
-import { Center, Loader } from '@mantine/core';
+import { Card, Center, Loader } from '@mantine/core';
 import React, { useEffect, useState } from 'react';
 import { useRoute } from 'wouter';
 import { loadProject } from '../../lib/invoke';
 import { Project } from '../../models/project/project';
 import './Editor.scss';
+import Sidebar from './Sidebar/Sidebar';
 
 const Editor: React.FC = () => {
   const [, params] = useRoute('/editor/:path');
@@ -26,7 +27,11 @@ const Editor: React.FC = () => {
     );
   }
 
-  return <div className="editor">h</div>;
+  return (
+    <div className="editor">
+      <Sidebar />
+    </div>
+  );
 };
 
 export default Editor;

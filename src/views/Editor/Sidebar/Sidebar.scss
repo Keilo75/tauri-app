@@ -1,0 +1,21 @@
+.sidebar {
+  height: 100%;
+  border-radius: 0;
+  border-top: none;
+  position: relative;
+
+  .drag-area {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: -2px;
+    width: 4px;
+    background-color: var(--mantine-primary-color);
+    cursor: e-resize;
+    opacity: 0;
+
+    &.drag-area-active {
+      opacity: 1;
+    }
+  }
+}

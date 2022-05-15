@@ -1,0 +1,78 @@
+import React, { useEffect, useRef, useState } from 'react';
+
+interface useDragAreaOptions {
+  minWidth: number;
+  offset?: number;
+}
+
+export const useDragArea = (
+  initialWidth: number,
+  options: useDragAreaOptions
+) => {
+  const offset = options.offset ?? 400;
+
+  const dragAreaRef = useRef<HTMLDivElement>(null);
+  const resizableRef = useRef<HTMLDivElement>(null);
+  const [dragAreaActive, setDragAreaActive] = useState(false);
+  const [dragAreaWidth, setDragAreaWidth] = useState(initialWidth);
+
+  useEffect(() => {
+    if (dragAreaRef.current && resizableRef.current) {
+      const handleMouseDown = () => {
+        setDragAreaActive(true);
+        document.body.style.cursor = 'e-resize';
+      };
+
+      const handleMouseUp = () => {
+        setDragAreaActive(false);
+        document.body.style.cursor = 'default';
+      };
+
+      const handleMouseMove = (e: MouseEvent) => {
+        if (!dragAreaActive) return;
+
+        // Prevent text from being selected
+        e.preventDefault();
+
+        if (e.clientX < options.minWidth) {
+          setDragAreaWidth(options.minWidth);
+          return;
+        }
+
+        const windowWidth = document.body.clientWidth;
+        if (e.clientX + offset < windowWidth) {
+          setDragAreaWidth(e.clientX);
+          return;
+        }
+
+        setDragAreaWidth(windowWidth - offset);
+      };
+
+      const handleWindowResize = () => {
+        if (!resizableRef.current) return;
+
+        const windowWidth = document.body.clientWidth;
+        const currentWidth = resizableRef.current.clientWidth;
+        const expectedWidth = currentWidth + offset;
+
+        if (windowWidth < expectedWidth) {
+          setDragAreaWidth(windowWidth - offset);
+        }
+      };
+
+      document.addEventListener('mouseup', handleMouseUp);
+      document.addEventListener('mousemove', handleMouseMove);
+      dragAreaRef.current.addEventListener('mousedown', handleMouseDown);
+      window.addEventListener('resize', handleWindowResize);
+
+      return () => {
+        document.removeEventListener('mouseup', handleMouseUp);
+        document.removeEventListener('mousemove', handleMouseMove);
+        dragAreaRef.current?.removeEventListener('mousedown', handleMouseDown);
+        window.removeEventListener('resize', handleWindowResize);
+      };
+    }
+  }, [dragAreaActive]);
+
+  return { dragAreaRef, dragAreaActive, dragAreaWidth, resizableRef };
+};
