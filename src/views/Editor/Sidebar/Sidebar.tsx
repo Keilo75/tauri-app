@@ -3,11 +3,12 @@ import clsx from 'clsx';
 import React from 'react';
 import { useDragArea } from '../../../hooks/useDragArea';
 import './Sidebar.scss';
+import SidebarItem from './SidebarItem/SidebarItem';
 
 const Sidebar: React.FC = () => {
   const { dragAreaRef, dragAreaHovered, dragAreaWidth, resizableRef } =
     useDragArea(250, {
-      minWidth: 150,
+      minWidth: 200,
     });
 
   return (
@@ -18,6 +19,9 @@ const Sidebar: React.FC = () => {
       ref={resizableRef}
       role="navigation"
     >
+      <SidebarItem label="Item 1" type="settings" />
+      <SidebarItem label="Item 2" type="settings" />
+
       <div
         className={clsx('drag-area', dragAreaHovered && 'drag-area-active')}
         aria-hidden={!dragAreaHovered}

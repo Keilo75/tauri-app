@@ -30,6 +30,7 @@ const Editor: React.FC = () => {
   return (
     <div className="editor">
       <Sidebar />
+      <div className="editor-content"></div>
     </div>
   );
 };

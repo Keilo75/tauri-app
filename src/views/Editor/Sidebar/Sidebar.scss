@@ -4,6 +4,22 @@
   border-top: none;
   position: relative;
 
+  .sidebar-item {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    cursor: pointer;
+    width: 100%;
+    padding: 0;
+    padding-left: 30px;
+    margin: 0;
+    list-style: none;
+
+    &:hover {
+      background-color: var(--hover-overlay-1);
+    }
+  }
+
   .drag-area {
     position: absolute;
     top: 0;
