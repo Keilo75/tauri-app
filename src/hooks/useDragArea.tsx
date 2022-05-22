@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useViewportSize } from '@mantine/hooks';
+import { useEffect, useRef, useState } from 'react';
 
 interface useDragAreaOptions {
   minWidth: number;
@@ -17,6 +18,19 @@ export const useDragArea = (
   const [dragAreaHovered, setDragAreaHovered] = useState(false);
   const [dragAreaActive, setDragAreaActive] = useState(false);
   const [dragAreaWidth, setDragAreaWidth] = useState(initialWidth);
+
+  const { height: windowHeight, width: windowWidth } = useViewportSize();
+  useEffect(() => {
+    if (!resizableRef.current) return;
+
+    const windowWidth = document.body.clientWidth;
+    const currentWidth = resizableRef.current.clientWidth;
+    const expectedWidth = currentWidth + offset;
+
+    if (windowWidth < expectedWidth) {
+      setDragAreaWidth(windowWidth - offset);
+    }
+  }, [windowHeight, windowWidth]);
 
   useEffect(() => {
     if (dragAreaRef.current && resizableRef.current) {
@@ -50,18 +64,6 @@ export const useDragArea = (
         setDragAreaWidth(windowWidth - offset);
       };
 
-      const handleWindowResize = () => {
-        if (!resizableRef.current) return;
-
-        const windowWidth = document.body.clientWidth;
-        const currentWidth = resizableRef.current.clientWidth;
-        const expectedWidth = currentWidth + offset;
-
-        if (windowWidth < expectedWidth) {
-          setDragAreaWidth(windowWidth - offset);
-        }
-      };
-
       const handleMouseEnter = () => {
         hoverTimeout.current = setTimeout(() => {
           setDragAreaHovered(true);
@@ -83,7 +85,6 @@ export const useDragArea = (
       dragAreaRef.current.addEventListener('mousedown', handleMouseDown);
       dragAreaRef.current.addEventListener('mouseenter', handleMouseEnter);
       dragAreaRef.current.addEventListener('mouseleave', handleMouseLeave);
-      window.addEventListener('resize', handleWindowResize);
 
       return () => {
         document.removeEventListener('mouseup', handleMouseUp);
@@ -97,7 +98,6 @@ export const useDragArea = (
           'mouseleave',
           handleMouseLeave
         );
-        window.removeEventListener('resize', handleWindowResize);
       };
     }
   }, [dragAreaActive]);
