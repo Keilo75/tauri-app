@@ -13,7 +13,6 @@ export const useDragArea = (
   const offset = options.offset ?? 400;
 
   const dragAreaRef = useRef<HTMLDivElement>(null);
-  const resizableRef = useRef<HTMLDivElement>(null);
   const hoverTimeout = useRef<number>();
   const [dragAreaHovered, setDragAreaHovered] = useState(false);
   const [dragAreaActive, setDragAreaActive] = useState(false);
@@ -21,19 +20,16 @@ export const useDragArea = (
 
   const { height: windowHeight, width: windowWidth } = useViewportSize();
   useEffect(() => {
-    if (!resizableRef.current) return;
-
     const windowWidth = document.body.clientWidth;
-    const currentWidth = resizableRef.current.clientWidth;
-    const expectedWidth = currentWidth + offset;
+    const expectedWidth = dragAreaWidth + offset;
 
     if (windowWidth < expectedWidth) {
       setDragAreaWidth(windowWidth - offset);
     }
-  }, [windowHeight, windowWidth]);
+  }, [windowHeight, windowWidth, dragAreaWidth]);
 
   useEffect(() => {
-    if (dragAreaRef.current && resizableRef.current) {
+    if (dragAreaRef.current) {
       const handleMouseDown = () => {
         setDragAreaActive(true);
         document.body.style.cursor = 'e-resize';
@@ -106,6 +102,5 @@ export const useDragArea = (
     dragAreaRef,
     dragAreaHovered: dragAreaActive || dragAreaHovered,
     dragAreaWidth,
-    resizableRef,
   };
 };
